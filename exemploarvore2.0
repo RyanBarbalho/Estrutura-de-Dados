@@ -1,0 +1,122 @@
+typedef struct noArv {
+    int info;
+    struct noArv *esq;
+    struct noArv *dir;
+}noArv;
+
+
+
+noArv *arvore_cria(void)
+{
+    return NULL;
+}
+
+void arvore_imprime(noArv *node)
+{
+    if (node != NULL) {
+        printf("( ");    
+        arvore_imprime(node->esq);
+        printf(", %d , ", node->info);
+        arvore_imprime(node->dir);
+        printf(") ");    
+    }
+    else printf("( )");    
+}
+
+noArv *arvore_insere(noArv *node, int value)
+{
+    if (node==NULL) {
+        node = (noArv*)malloc(sizeof(noArv));
+        node->info = value;
+        node->esq = NULL;
+        node->dir = NULL;
+    }
+    else    if (value < node->info){
+                node->esq = arvore_insere(node->esq,value);
+            }
+            else node->dir = arvore_insere(node->dir,value);
+    return node;
+}
+
+noArv *arvore_remover (noArv *node, int value)
+{
+    noArv *t, *f;    
+   
+    if (node == NULL){
+        printf("elemento %d nao encontrado!", value);
+        return NULL;
+    }    
+    else
+    {
+        if(node->info > value)
+        {
+                node->esq = arvore_remover(node->esq, value);
+            }
+            else
+            {   
+                if (node->info < value){
+                        node->dir = arvore_remover(node->dir, value);
+                    }
+                    else{
+                        if (node->esq == NULL && node->dir == NULL)
+                        {
+                                free(node);
+                                node = NULL;
+                            }
+                            else {
+                                if (node->esq == NULL)
+                                {
+                                        t = node;
+                                        node = node->dir;
+                                        free(t);
+                                    }
+                                    else { 
+                                        if(node->dir == NULL)
+                                        {
+                                                t = node;
+                                                node = node->esq;
+                                                free(t);
+                                            }
+                                            else { 
+                                                f = node->esq;
+                                                    while (f->dir != NULL)
+                                                    {
+                                                        f = f->dir;
+                                                    }
+                                                    node->info = f->info;
+                                                    f->info = value;
+                                                    node->esq = arvore_remover(node->esq,value);
+                                                 }
+                                         }
+                                 }
+                         }
+                 }
+         }
+        return node;
+}
+
+void sair()
+{
+    printf("Ja vai??? Nao! Nao! Espere! Naa...\n");
+}
+
+
+int main()
+{
+
+    noArv *root = NULL;
+    int element1  = 8, element2 = 2, element3 = 10, element5 = 13, element6 = 9;
+    int element4 = 6;
+    arvore_cria();
+    arvore_insere(root,element1);
+    arvore_insere(root,element2);
+    arvore_insere(root,element3);
+    arvore_insere(root,element4);
+    arvore_insere(root,element5);
+    arvore_insere(root,element6);
+
+    arvore_imprime(root);
+
+
+    return 0;
+}
