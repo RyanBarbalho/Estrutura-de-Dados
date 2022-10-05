@@ -1,19 +1,20 @@
 #include<stdio.h>
 
-void swap(int x,int y)
-{
-        int aux1 = y;
-        x = aux1;
-        y = x;
-}
 
+void swap(int array[],int x, int y)
+{
+        int aux1 = array[y];
+        array[y] = array[x];
+        array[x] = aux1;
+        
+}
 void selectSort(int array[], int size)
 {
     for(int i=1; i<size ; i++){
         
         for(int j= i; j>0 ; j--){
             if( array[j]<array[j-1]){
-                swap( array[j], array[j-1]);
+                swap( array, j, j-1);
             }
 
         }
