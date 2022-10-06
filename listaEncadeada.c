@@ -52,6 +52,7 @@ node *searchNode(node *head, int value){
         }
         aux = aux->next;
     }
+    
     printf("numero nao encontrado\n");
     return NULL;
 }
