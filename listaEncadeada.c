@@ -9,16 +9,6 @@ struct listaEncadeada{
 };
 typedef struct listaEncadeada node;
 
-void print(node *head){
-
-    while ( head!= NULL){
-        printf("%d--", head->value);
-        head = head->next;
-    }
-    printf("\n");
-}
-
-
 node *createNode(int value){
     //alocar um novo node usando malloc
     node *result = malloc(sizeof(node));
@@ -29,11 +19,73 @@ node *createNode(int value){
     return result;
 }
 
+void print(node *head){
+
+    while ( head!= NULL){
+        printf("%d--", head->value);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+
+void deleteNode(node* head, int value){
+    node *i = head;
+    while(i!= NULL){
+        if( i -> next ->value == value){
+            node *aux = i ->next;
+            i -> next = aux ->next;
+            break;
+
+        }
+        i = i -> next;
+    }
+        
+    return;
+
+}
+
+void concatenate(node *firstList, node *secondList){
+    node *i = firstList;
+
+    while(i-> next != NULL){
+        i = i -> next;
+    }
+    i -> next = secondList;
+    secondList = NULL;
+}
+
+int *highest(node *head){
+    node *i = head;
+    int highest;
+    highest = i -> value;
+    while(i->next != NULL){
+        if(i->value<i->next->value){
+            highest = i->next->value;
+        }
+        i = i -> next;
+    }
+    return highest;
+}
+
+
 node *insertAtBeginning(node *head, node *insertedNode){
     insertedNode->next = head;
     head = insertedNode;
     
     return insertedNode;
+
+}
+
+void insertAtEnd(node *head, node*insertedNode){
+    node *i = head;
+    while(i->next!=NULL){ 
+        i = i -> next;
+    }
+
+    i -> next = insertedNode;
+    insertedNode -> next = NULL;
+
 
 }
 
@@ -52,7 +104,6 @@ node *searchNode(node *head, int value){
         }
         aux = aux->next;
     }
-    
     printf("numero nao encontrado\n");
     return NULL;
 }
@@ -67,19 +118,40 @@ int main()
         aux = createNode(i);
         head = insertAtBeginning(head, aux);
     }
-    
-    
     print(head);
-    aux = searchNode(head, 2);
-    printf("\n");
-    aux = searchNode(head, 25);
     
-    aux = searchNode(head, 8);
-    //criar novo node 25 e depois inserir ele
     node *temp = createNode(25);
-    insertAfterAnother(aux, temp);
-    
+    printf("\n");
+    insertAtEnd(head, temp);
+
     print(head);
+    printf("\n");
+    deleteNode(head,25);
+    print(head);
+
+    node *primeiraLista = NULL;
+    node *segundaLista = NULL;
+
+    for (int i= 0; i<9; i++){
+        aux = createNode(i);
+        primeiraLista = insertAtBeginning(primeiraLista, aux);
+    }
+    printf("\n");
+    print(primeiraLista);
+    for (int i= 9; i<15; i++){
+        aux = createNode(i);
+        segundaLista = insertAtBeginning(segundaLista, aux);
+    }
+    printf("\n");
+    print(segundaLista);
+    printf("\n");
+
+    concatenate(primeiraLista,segundaLista);
+    print(primeiraLista);
+
+    int x = highest(head);
+    printf("\n maior = %d\n", x);
+
 
     return 0;
 }
