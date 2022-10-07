@@ -1,189 +1,241 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct nodeArv{
-    int data;
-    struct nodeArv *left;
-    struct nodeArv *right;
+struct listaEncadeada{
+    int value;
+    //ponteiro que vai apontar para o proximo node da lista >>
+    struct listaEncadeada* next;
 
-}nodeArv;
+};
+typedef struct listaEncadeada node;
 
-//node = raiz
-nodeArv *create()
-{
+void print(node *head){
+
+    while ( head!= NULL){
+        printf("%d--", head->value);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+node *createNode(int value){
+    //alocar um novo node usando malloc
+    node *result = malloc(sizeof(node));
+    //o valor do node criado sera o valor fornecido 
+    result ->value = value;
+    result ->next = NULL;
+
+    return result;
+}
+
+
+void deleteNode(node* head, int value){
+    node *i = head;
+    int x;
+    while(i -> next!= NULL){
+        if( i -> next ->value == value){
+            node *aux = i ->next;
+            i -> next = aux ->next;
+            x=1;
+            break;
+        }
+        else if( i -> value == value){
+            node *aux = head;
+            aux = head->next;
+        }
+        i = i -> next;
+    }
+    if(x!=1) printf("Numero nao encontrado\n");
+        
+    return;
+
+}
+
+void concatenate(node *firstList, node *secondList){
+    node *i = firstList;
+
+    while(i-> next != NULL){
+        i = i -> next;
+    }
+    i -> next = secondList;
+    secondList = NULL;
+}
+
+int highest(node *head){
+    node *i = head;
+    int highest;
+    highest = i -> value;
+    while(i->next != NULL){
+        if(i->value<i->next->value){
+            highest = i->next->value;
+        }
+        i = i -> next;
+    }
+    return highest;
+}
+
+
+node *insertAtBeginning(node *head, node *insertedNode){
+    insertedNode->next = head;  
+    head = insertedNode;
+    
+    return insertedNode;
+
+}
+
+void insertAtEnd(node *head, node*insertedNode){
+    node *i = head;
+    while(i->next!=NULL){ 
+        i = i -> next;
+    }
+
+    i -> next = insertedNode;
+    insertedNode -> next = NULL;
+
+
+}
+
+void insertAfterAnother(node *previousNode, node* insertedNode){
+    insertedNode->next = previousNode -> next;
+    previousNode->next = insertedNode;
+
+}
+
+node *searchNode2(node *head, int value){
+    node *aux = head;
+    while (aux!= NULL){
+        if (aux->value == value){
+            
+            return aux;
+        }
+        aux = aux->next;
+    }
     return NULL;
 }
 
-nodeArv *delete(nodeArv *node, int number)
-{
-    nodeArv *aux1, *aux2;
-
-    if(node == NULL)
-    {
-        return NULL;
-    }
-
-    if (number < node->data){
-        node->left = delete(node->left, number);
-    }
-    else if(number > node->data){
-        node->right = delete(node->right, number);
-    }
-    else{       //entra na condicao do numbero ser igual ao no
-        
-        if(node->left == NULL && node->right == NULL){
-            free(node);
-            node = NULL;
+node *searchNode(node *head, int value){
+    node *aux = head;
+    while (aux!= NULL){
+        if (aux->value == value){
+            printf("Achei!!!... o numero %d, ne?\n", aux->value);
+            return aux;
         }
-        else if(node->right == NULL){
-            aux1 = node;
-            node = node->left;
-            free(aux1);
-        }
-        else if(node->left==NULL){
-            aux1 = node;
-            node = node->right;
-            free(aux1);
-        } // tem dois filhos >>
-        else{
-            aux2 = node->left;
-            while (node->right != NULL){
-                node = node->right;
-            }
-            node->data = aux2->data;
-
-            aux2->data = number;
-            node->left = delete(node->left, number);
-
-        }
-
-
+        aux = aux->next;
     }
-
-
-    return node;
-}
-
-int searchTree(nodeArv *node, int number)
-{
-    if(node == NULL){
-        
-        return 0;
-    }
-    else{
-        if(node -> data == number){
-            return 1;
-        }
-        else if(number > node->data){
-            searchTree(node -> right, number );
-        }
-        else if(number< node->data){
-            searchTree(node -> left, number);
-        }
-    }
-
-}
-
-void printTree(nodeArv *node)
-{
-    if(node != NULL){
-        printf("(");
-        printTree(node->left);
-        printf("(%d)", node->data);
-        printTree(node->right);
-        printf(")");
-    }
-    else printf("( )");
-}
-
-
-nodeArv *insert(nodeArv *node, int value)
-{
-    //se estiver vazia vai inserir
-    if(node == NULL)
-    {
-        node = (nodeArv*)malloc(sizeof(nodeArv));
-        node->data = value; 
-        node->left = NULL;
-        node->right = NULL;   
-    }
-    else{
-        //se o valor for menor que a raiz vai pra esquerda
-        if(node->data > value){
-            //o valor do no a esquerda recebe a funçao de inserir
-            node->left = insert(node->left, value);
-        }
-        else if(node->data < value){
-            //o valor do no a direita recebe a funçao de inserir
-            node->right = insert (node->right, value);
-        }
-
-
-    }
-    return node;
-
+    printf("numero nao encontrado\n");
+    return NULL;
 }
 
 int main()
-{
-
-    nodeArv *root;
-    int var=1;
-    printf("----------------------------------------------------------------------------------\nExemplo de Arvore Binaria em C, vamos la!\n----------------------------------------------------------------------------------\n\n\n");
-    
-    root = create();
-    printf("Vamos comecar inserindo a raiz\nDigite a raiz:");
+{   
+    node *head = NULL;
+    node *aux;
+    node *novaLista;
+    printf("\n---------------------------------------------------------------------------------------------\n");
+    printf("Essa e a lista encadeada em C, simbora.\nDigite o primeiro numero da lista:\n");
     int number;
     scanf("%d", &number);
-    root = insert(root, number);
-    while (var){
-        printf("\n---------------------------------------------------------------------\nEscolha entre as opcoes abaixo:\nInserir Elemento(1)\nImprimir a Arvore(2)\nProcurar um elemento(3)\nApagar um elemento(4)\nEncerrar o programa(0)\n");
-        printf("---------------------------------------------------------------------\n");
-        int i;
-        scanf("%d", &i);
+    aux = createNode(number);
+    head = insertAtBeginning(head, aux);
 
-        switch(i){
+    int x=1;
+    while(x==1){
+        printf("\n------------------------------------------------------------------------------------------\n");
+        printf("Escolha entre as opcoes:\n(1)inserir no comeco\n(2)inserir no final\n");
+        printf("(3)Inserir apos um Node especifico\n(4)Informar o maior valor\n(5)Deletar um Node\n(6)Procurar um Node na lista\n(7)Concatenar duas listas\n(8)Imprimir Lista\n(0)Fechar o programa\n");
+        printf("------------------------------------------------------------------------------------------\n");
+
+        int choice, number, value;
+        scanf("%d",&choice);
+        
+        switch(choice){
             case 1:
-                printf("Digite o numero a ser inserido:");
-                int num;
-                scanf("%d", &num);
-                root = insert(root, num); 
+                printf("Digite o Node a ser inserido:\n");
+                int i;
+                scanf("%d", &i);
+                aux = createNode(i);
+                head = insertAtBeginning(head, aux);
+                print(head);
                 break;
             case 2:
-                printf("\n");
-                printTree(root);
-                printf("\n");
+                printf("Digite o Node a ser inserido:\n");
+                scanf("%d", &i);
+                aux = createNode(i);
+                insertAtEnd(head, aux);
+                print(head);
                 break;
             case 3:
-                printf("Digite o Elemento a ser encontrado\n");
-                int search;
-                scanf("%d", &num);
+                printf("Digite o Node anterior:\n");
+                int aux1, aux2;
 
-                search = searchTree(root, num);
+                scanf("%d", &aux1);
 
-                if(search==1) printf("Numero %d encontrado\n",num);
-                else printf("Numero nao encontrado\n");
+                node *aux_ = searchNode2(head, aux1);
+                if (aux == NULL){
+                    printf("numero nao encontrado\n");
+                    break;
+                }
+
+                printf("Digite o Node a se inserido\n");
+
+                scanf("%d", &aux2);
+                aux = createNode(aux2);
+                insertAfterAnother( aux_, aux);
+                print(head);
                 break;
             case 4:
-                printf("Digite o Elemento a ser apagado\n");
-
-                scanf("%d", &num);
-                root = delete(root, num);
-
-                printf("Elemento deletado, nova arvore:\n");
-                printTree(root);
-                break;
-            default:
-                printf("Encerrando.....\n");
-                var=0;
-                break;
-
                 
-        }   
+                number = highest(head);
+                printf("O maior numero e: %d\n", number);
+                break;
+            case 5:
+                
+                printf("Digite o numero a ser removido\n");
+                scanf("%d", &value);
+                deleteNode(head, value);
+                break;
+            case 6:
+                printf("Digite o numero a ser encontrado\n");
+                
+                scanf("%d", &value);
 
+                searchNode(head, value);
+                break;
+            case 7:
+                printf("vamos criar uma nova lista de 5 componentes\n");
+                
+                for (int i=0; i < 5; i++){
+                    int numb;
+                    printf("numero %d:\n", i+1);
+                    scanf("%d", &numb);
+                    aux = createNode(numb);
+                    novaLista = insertAtBeginning(novaLista, aux);
+                
+                }
+                
+                
+                printf("Agora vamos juntar a lista anterior com essa nova\n");
+                concatenate(head,novaLista);
+
+                print(head);
+                printf("\n");
+                break;
+            case 8:
+                print(head);
+                printf("\n");
+                break;
+            default: 
+                x=0;
+                break;
+            
+
+            
+        }
+        if (x==0){
+            break;
+        }
 
     }
 
-
-
+    return 0;
 }
