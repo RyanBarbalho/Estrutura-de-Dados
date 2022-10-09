@@ -20,7 +20,5 @@ node *createNode(int value){
 int main()
 {
 
-
-
     return 0;
 }
