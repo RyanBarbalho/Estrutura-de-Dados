@@ -17,6 +17,15 @@ node *createNode(int value){
     number -> next = NULL;
 }
 
+node *insertRoot(node *root, node* newNode)
+{
+    if(root == NULL){
+        root = newNode;
+
+    }
+    else if(root !=)
+}
+
 int main()
 {
 
