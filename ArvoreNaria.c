@@ -44,39 +44,49 @@ node *insertChildren(node *root, int value)
 }
 
 
-// funcao delete incompleta
-//node *delete(node *root, int parentNumber, int childNumber){
-//    node *i = root;
+node *delete(node *root, int parentNumber, int childNumber){
+    node *aux = root;
 
-//     if(i == NULL){
-//         return NULL;
-//     }
-    
-//     if(i -> children -> data == parentNumber)
-//     {
-//         node *aux = i-> children;
-//        if(aux->children != NULL){
-// 
-//         }
-//         return root;
-//     }
+    if(aux == NULL){
+        return NULL;
+    }
+    if(root -> data == parentNumber) //achou
+    {
+        
+        if(aux -> children != NULL){
+            aux = root ->children;         
+            root = aux;
+            aux -> next = aux -> children;   
+            
+            return root;
+                        
+        }
+        else if(aux->children == NULL){
+            
+            free(root);
+            root = NULL;
 
-//     node *auxSearch;
 
-//     auxSearch = delete(i-> next, parentNumber, childNumber);
-//     if(auxSearch != NULL)
-//     {
-//         return auxSearch;
-//     }
+        }
+        return root;
+     }
 
-//    auxSearch = delete(i -> children, parentNumber, childNumber);
-//     if (auxSearch != NULL)
-//     {
-//         return auxSearch;
-//     }
-//     return NULL;
+     node *auxSearch;
 
-// }
+     auxSearch = delete(aux-> next, parentNumber, childNumber);
+     if(auxSearch != NULL)
+     {
+        return auxSearch;
+     }
+
+    auxSearch = delete(aux -> children, parentNumber, childNumber);
+     if (auxSearch != NULL)
+     {
+         return auxSearch;
+     }
+     return NULL;
+
+}
 
 
 
@@ -152,6 +162,7 @@ void print(node *root)
 
 int main()
 {
+    int choice;
     //começamos criando uma raiz
     node *root = createNode(5);
 
@@ -164,6 +175,8 @@ int main()
     insertNode(root, 6, 25);
 
 
+    print(root);
+    delete(root,3,18);
     print(root);
 
 
