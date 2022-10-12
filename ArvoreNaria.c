@@ -12,22 +12,162 @@ typedef struct nAryTree{
 node *createNode(int value){
     node *number = malloc(sizeof(node));
 
-    number -> data = value;
-    number -> children = NULL;
-    number -> next = NULL;
-}
-
-node *insertRoot(node *root, node* newNode)
-{
-    if(root == NULL){
-        root = newNode;
+    if (number != NULL){
+        number -> data = value;
+        number -> children = NULL;
+        number -> next = NULL;
 
     }
-    else if(root !=)
+   
+    return number;
+}
+
+node *insertChildren(node *root, int value)
+{
+    node *newNode = createNode(value);
+
+    if (root == NULL){
+        root = newNode;
+    }
+    else
+    {
+        node *aux = root;
+
+        while (aux->next != NULL){
+            aux = aux->next;
+        }
+
+        aux->next = newNode;
+    }
+    
+    return root;
+}
+
+
+// funcao delete incompleta
+//node *delete(node *root, int parentNumber, int childNumber){
+//    node *i = root;
+
+//     if(i == NULL){
+//         return NULL;
+//     }
+    
+//     if(i -> children -> data == parentNumber)
+//     {
+//         node *aux = i-> children;
+//        if(aux->children != NULL){
+// 
+//         }
+//         return root;
+//     }
+
+//     node *auxSearch;
+
+//     auxSearch = delete(i-> next, parentNumber, childNumber);
+//     if(auxSearch != NULL)
+//     {
+//         return auxSearch;
+//     }
+
+//    auxSearch = delete(i -> children, parentNumber, childNumber);
+//     if (auxSearch != NULL)
+//     {
+//         return auxSearch;
+//     }
+//     return NULL;
+
+// }
+
+
+
+node *insertNode(node *root, int parentNumber, int childNumber){
+
+    if(root == NULL){
+        return NULL;
+    }
+    //encontrou o node
+    if(root -> data == parentNumber)
+    {
+        root -> children = insertChildren(root -> children, childNumber);
+
+        return root;
+    }
+
+    node *auxSearch;
+    
+    //procura se e irmao
+    auxSearch = insertNode(root-> next, parentNumber, childNumber);
+    if(auxSearch != NULL)
+    {
+        return auxSearch;
+    }
+    //procura se e filho
+    auxSearch = insertNode(root -> children, parentNumber, childNumber);
+    if (auxSearch != NULL)
+    {
+        return auxSearch;
+    }
+
+
+    return NULL;
+
+}
+
+void pressTab(int level){
+    for (int i = 0; i < level; i++)
+    {
+        printf("\t");
+    }
+}
+
+void printloop(node *root, int level)
+{
+
+    while(root != NULL){
+
+        //tab do level
+        pressTab(level);
+
+        printf("Node: %d\n", root -> data);
+
+        if(root -> children != NULL)
+        {
+            //tab do level 
+            pressTab(level);
+        
+            printf( "Children :\n" );
+
+            printloop(root ->children, level+1);
+        }
+
+        root = root -> next; 
+    }
+    
+}
+
+void print(node *root)
+{
+    printloop(root, 0);
 }
 
 int main()
 {
+    //começamos criando uma raiz
+    node *root = createNode(5);
+
+    insertNode(root, 5, 3);
+    insertNode(root, 5 , 7);
+    insertNode(root, 7, 6);
+    insertNode(root, 7, 10);
+    insertNode(root, 3, 13);
+    insertNode(root, 3, 18);
+    insertNode(root, 6, 25);
+
+
+    print(root);
+
+
 
     return 0;
 }
+
