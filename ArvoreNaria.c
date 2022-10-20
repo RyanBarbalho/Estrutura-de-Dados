@@ -3,8 +3,8 @@
 
 typedef struct nAryTree{
     int data;
-    struct treeNode *children;
-    struct treeNode *next; // sibling
+    struct nAryTree *children;
+    struct nAryTree *next; // sibling
 
 }node;
 
@@ -183,4 +183,5 @@ int main()
 
     return 0;
 }
+
 
