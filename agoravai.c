@@ -42,7 +42,8 @@ node *insertRoot(node *root, char name[]){
         strcpy(root->data, name);
         root -> left = NULL;
         root -> right = NULL;
-        printf("%s", root->data);
+        //debug
+        printf("%s\n", root->data);
 
         return root;
     } 
@@ -60,7 +61,9 @@ node *insert(node *root, char fatherchar[][15], char sonchar[][15], char name[])
         strcpy(root->data, name);
         root -> left = NULL;
         root -> right = NULL;
+        //debug
         printf("%s\n", root->data);
+        return root;
     }
     else{
         //aqui vamos verificar a semelhança dele        /size v/
@@ -72,11 +75,11 @@ node *insert(node *root, char fatherchar[][15], char sonchar[][15], char name[])
         }
         else if(resemblance<=2){
             printf("animal vai a esquerda\n"); //debugzin
-            root = insert(root->left, fatherchar, sonchar, name);
+            root->left = insert(root->left, fatherchar, sonchar, name);
         }
         else if(resemblance>2){
-            printf("animal vai a esquerda\n");
-            root = insert(root->right, fatherchar, sonchar, name);
+            printf("\nanimal vai a direita\n");//debug
+            root->right = insert(root->right, fatherchar, sonchar, name);
         }
 
     }
@@ -126,21 +129,5 @@ int main()
 
     printTree(root);
 
-
-
-
-    
-    
-   
- 
-    
-    //char animaList[4][15];
-    //char name[15]= "maceico";
-    //int father = 0;
-
-    //animal 1 adicionado, agora vamos inserir na arvore
-
-
-    
 
 }
