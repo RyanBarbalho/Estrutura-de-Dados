@@ -23,6 +23,7 @@ void printTree(node *root)
 }
 
 //comparacao se as caracteristicas sao iguais
+//BUG====>>>> TA SEMPRE INDO PRA DIREITA
 int comparison(int resembles , char fatherList[][15], char sonList[][15], int size){
 
     for(int i = 0; i < size ; i++){
@@ -67,6 +68,7 @@ node *insert(node *root, char fatherchar[][15], char sonchar[][15], char name[])
     }
     else{
         //aqui vamos verificar a semelhança dele        /size v/
+        //BUG====>>>> TA SEMPRE INDO PRA DIREITA
         int resemblance = comparison(0, fatherchar , sonchar, 4);
 
         if(resemblance == 0){
@@ -78,7 +80,7 @@ node *insert(node *root, char fatherchar[][15], char sonchar[][15], char name[])
             root->left = insert(root->left, fatherchar, sonchar, name);
         }
         else if(resemblance>2){
-            printf("\nanimal vai a direita\n");//debug
+            printf("animal vai a direita\n");//debug
             root->right = insert(root->right, fatherchar, sonchar, name);
         }
 
@@ -112,7 +114,7 @@ int main()
     //animal raiz inserido 
     root = insertRoot(root, animal[0].name);
     //adicionar os proximos animais
-
+    printTree(root);
     //nome filho
     strcpy(animal[1].name,"abe");
     char caracteristics[][15] = {"caca", "as", "antenas", "te"};
@@ -125,9 +127,12 @@ int main()
     for(int i = 0; i < 4 ; i++){
         strcpy(fatherchar[i], animal[counter].charac[i]);
     }
-    root = insert(root, fatherchar, animal[1].charac, animal[1].name);
+    insert(root, fatherchar, animal[1].charac, animal[1].name);
 
     printTree(root);
 
+
+
+    
 
 }
