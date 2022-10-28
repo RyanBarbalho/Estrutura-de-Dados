@@ -23,15 +23,17 @@ void printTree(node *root)
 }
 
 //comparacao se as caracteristicas sao iguais
-//BUG====>>>> TA SEMPRE INDO PRA DIREITA
 int comparison(int resembles , char fatherList[][15], char sonList[][15], int size){
 
     for(int i = 0; i < size ; i++){
 
         if (strcmp(fatherList[i], sonList[i]) == 0){
+            printf("\n %s == %s \n", fatherList[i], sonList[i]);
             resembles++;
+            printf("\n(((%d)))\n",resembles);
         }
     }
+    printf("\n(((%d)))\n",resembles);
     return resembles;
 
 }
@@ -68,7 +70,6 @@ node *insert(node *root, char fatherchar[][15], char sonchar[][15], char name[])
     }
     else{
         //aqui vamos verificar a semelhança dele        /size v/
-        //BUG====>>>> TA SEMPRE INDO PRA DIREITA
         int resemblance = comparison(0, fatherchar , sonchar, 4);
 
         if(resemblance == 0){
@@ -95,6 +96,7 @@ int main()
     //pode ser setada a quantidade de animais a serem adicionados, por hora vamos definir 4
     // as caracteristicas ja foram limitadas como 4
     int number = 4;
+    //contador de pai
     int counter = 0;
 
     struct lista{
@@ -117,16 +119,19 @@ int main()
     printTree(root);
     //nome filho
     strcpy(animal[1].name,"abe");
+
     char caracteristics[][15] = {"caca", "as", "antenas", "te"};
     //caracterisitcas filho
     for(int i = 0; i < 4 ; i++){
-        strcpy(animal[1].charac[i], caracteristicas[i]);
+        strcpy(animal[1].charac[i], caracteristics[i]);
     }
+
     //definicao do pai para usar na insercao dos filhos 
     char fatherchar[4][15];
     for(int i = 0; i < 4 ; i++){
         strcpy(fatherchar[i], animal[counter].charac[i]);
     }
+
     insert(root, fatherchar, animal[1].charac, animal[1].name);
 
     printTree(root);
