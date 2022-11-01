@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-int index = 0;
+int ind = 0;
 
 typedef struct tree
 {
@@ -57,8 +57,8 @@ node *insertRoot(node *root, char name[]){
         root -> right = NULL;
         //debug
         
-        root -> count = index;
-        index++;
+        root -> count = ind;
+        ind++;
 
         return root;
     } 
@@ -67,7 +67,7 @@ node *insertRoot(node *root, char name[]){
 }
 
 // tirar o father char ->> tiramo                     //agora nao sabemos se da pra fazer isso aqui de declarar o array de struct nessa funçao, vamo ve
-node *insert(node *root, char sonchar[][15], char name[], list *teste){
+node *insert(node *root, char sonchar[][15], char name[]){
 
     if (root == NULL){
         //espaço eh alocado
@@ -79,8 +79,8 @@ node *insert(node *root, char sonchar[][15], char name[], list *teste){
         //debug
         
 
-        root -> count = index;
-        index++;
+        root -> count = ind;
+        ind++;
         return root;
     }
     else{
@@ -98,17 +98,17 @@ node *insert(node *root, char sonchar[][15], char name[], list *teste){
         int resemblance = comparison(0, fatherchar , sonchar, 4);
 
         if(resemblance == 0){
-            printf("animal %d nao valido\n", name, animal);
+            printf("animal %s nao valido\n", name);
             
         }
         else if(resemblance<=2){
              //debugzin
            
-            root->left = insert(root->left, sonchar, name, animal);
+            root->left = insert(root->left, sonchar, name);
         }
         else if(resemblance>2){
                     //debug
-            root->right = insert(root->right, sonchar, name, animal);
+            root->right = insert(root->right, sonchar, name);
         }
 
     }
@@ -121,12 +121,8 @@ int main()
     node *root = NULL;
     //pode ser setada a quantidade de animais a serem adicionados, por hora vamos definir 4
     // as caracteristicas ja foram limitadas como 4
-    int number = 4;
     //contador de pai
-    int counter = 0;
 
-
-    list *teste = NULL;
 
     //primeiro animal
     strcpy(animal[0].name, "maceico");
@@ -155,7 +151,7 @@ int main()
     //    strcpy(fatherchar[i], animal[counter].charac[i]);
     //}
 
-    insert(root, animal[1].charac, animal[1].name, teste);
+    insert(root, animal[1].charac, animal[1].name );
     printf("\n");
     printTree(root);
 
