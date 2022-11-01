@@ -2,13 +2,23 @@
 #include<stdlib.h>
 #include<string.h>
 
+int index = 0;
+
 typedef struct tree
 {
     char data[15];
+    int count;
     struct tree *left;
     struct tree *right;
 
 }node;
+
+struct lista{
+    char name[15];
+    char charac[4][15];
+    }
+    animal[15];
+typedef struct lista list;
 
 void printTree(node *root)
 {
@@ -28,12 +38,12 @@ int comparison(int resembles , char fatherList[][15], char sonList[][15], int si
     for(int i = 0; i < size ; i++){
 
         if (strcmp(fatherList[i], sonList[i]) == 0){
-            printf("\n %s == %s \n", fatherList[i], sonList[i]);
+            
             resembles++;
-            printf("\n(((%d)))\n",resembles);
+            
         }
     }
-    printf("\n(((%d)))\n",resembles);
+    
     return resembles;
 
 }
@@ -46,7 +56,9 @@ node *insertRoot(node *root, char name[]){
         root -> left = NULL;
         root -> right = NULL;
         //debug
-        printf("%s\n", root->data);
+        
+        root -> count = index;
+        index++;
 
         return root;
     } 
@@ -54,8 +66,8 @@ node *insertRoot(node *root, char name[]){
         return NULL;
 }
 
-
-node *insert(node *root, char fatherchar[][15], char sonchar[][15], char name[]){
+// tirar o father char ->> tiramo                     //agora nao sabemos se da pra fazer isso aqui de declarar o array de struct nessa funçao, vamo ve
+node *insert(node *root, char sonchar[][15], char name[], list *teste){
 
     if (root == NULL){
         //espaço eh alocado
@@ -65,24 +77,38 @@ node *insert(node *root, char fatherchar[][15], char sonchar[][15], char name[])
         root -> left = NULL;
         root -> right = NULL;
         //debug
-        printf("%s\n", root->data);
+        
+
+        root -> count = index;
+        index++;
         return root;
     }
     else{
         //aqui vamos verificar a semelhança dele        /size v/
+        //struct vai estar sendo chamado 
+        //father char = node atual =>>>  animal[counter].charac[i]
+        //index vai ser do node atual
+        int index_ = root->count;
+        char fatherchar[4][15];
+        for(int i = 0; i < 4 ; i++){   //counter = animal anterior
+            strcpy(fatherchar[i], animal[index_].charac[i]);
+        }
+
+
         int resemblance = comparison(0, fatherchar , sonchar, 4);
 
         if(resemblance == 0){
-            printf("animal %d nao valido\n", name);
+            printf("animal %d nao valido\n", name, animal);
             
         }
         else if(resemblance<=2){
-            printf("animal vai a esquerda\n"); //debugzin
-            root->left = insert(root->left, fatherchar, sonchar, name);
+             //debugzin
+           
+            root->left = insert(root->left, sonchar, name, animal);
         }
         else if(resemblance>2){
-            printf("animal vai a direita\n");//debug
-            root->right = insert(root->right, fatherchar, sonchar, name);
+                    //debug
+            root->right = insert(root->right, sonchar, name, animal);
         }
 
     }
@@ -99,11 +125,8 @@ int main()
     //contador de pai
     int counter = 0;
 
-    struct lista{
-    char name[15];
-    char charac[4][15];
-    }
-    animal[number];
+
+    list *teste = NULL;
 
     //primeiro animal
     strcpy(animal[0].name, "maceico");
@@ -127,17 +150,13 @@ int main()
     }
 
     //definicao do pai para usar na insercao dos filhos 
-    char fatherchar[4][15];
-    for(int i = 0; i < 4 ; i++){
-        strcpy(fatherchar[i], animal[counter].charac[i]);
-    }
+    //char fatherchar[4][15];
+    //for(int i = 0; i < 4 ; i++){   //counter = animal anterior
+    //    strcpy(fatherchar[i], animal[counter].charac[i]);
+    //}
 
-    insert(root, fatherchar, animal[1].charac, animal[1].name);
-
+    insert(root, animal[1].charac, animal[1].name, teste);
+    printf("\n");
     printTree(root);
-
-
-
-    
 
 }
