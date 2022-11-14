@@ -20,17 +20,6 @@ struct lista{ //array de structs ->> informaçoes dos animais
     animal[15];
 typedef struct lista list;
 
-typedef struct nodeRow{
-    char nameInRow[15];
-    struct nodeRow *next;
-}nodeRow; 
-
-typedef struct row{
-    
-    nodeRow *first;
-    nodeRow *last;
-}row;
-
 
 
 void printTree(node *root)
@@ -123,84 +112,6 @@ node *insert(node *root, char sonchar[][15], char name[]){
 
     return root;
 
-}
-
-
-void createRow(row *roow){
-
-    roow->first = NULL;
-    roow->last = NULL;
-
-}
-
-void insertRow(row *roow, char nameRow[]){ 
-    nodeRow *new = malloc (sizeof(nodeRow));
-    strcpy(new->nameInRow, nameRow);
-    new->next = NULL;
-      
-   if(roow->first == NULL){
-   
-        roow->first = new;
-        roow->last = new;
-    }
-    else{
-        roow->last->next = new;
-        roow->last = new;
-    }
-    nodeRow *aux = roow->first;
-   
-}
-nodeRow *removeRow(row *roow){
-    nodeRow *remove = NULL;
-    if(roow->first != NULL){
-        remove = roow->first;
-        roow->first = remove->next;
-        free(remove);
-    }
-    else{
-        printf("lista vazia");
-    }
-}
-
-int searchLoop(row *roow, char lookNode[], node *root){
-    node *aux;
-    //verifica se a lista ta vazia
-    if(roow -> first == NULL){
-        return 0;
-    }
-    //se o primeiro elemento da lista for igual a o elemento procurado
-    else if(strcmp(roow->first->nameInRow, lookNode) == 0){         
-        return 1;
-    }
-    //remove o primeiro elemento
-    removeRow(roow);
-    //adiciona os nos esquerdos e direitos na lista
-    if(root->left != NULL){
-        aux = root->left;
-        insertRow(roow, aux->data);
-
-        searchLoop(roow, lookNode, root->left);
-    }
-    if(root->right != NULL){
-        aux = root->right;
-        insertRow(roow, aux->data);
-        searchLoop(roow, lookNode, root->right);
-    }
-    searchLoop(roow, lookNode, root);
-}
-
-void search(node *root, char lookNode[]) {
-    //primeiro cria uma lista vazia
-    row roow;
-    int procura;
-    createRow(&roow);
-    //insere a raiz da arvore na lista
-    insertRow(&roow, root->data);
-    //chama a funçao recurisva que vai comparar
-    procura = searchLoop(&roow, lookNode, root);
-
-    if (procura == 1)printf("node %s found\n", lookNode);
-    else printf("node not found\n");
 }
 
 int main()
